@@ -1,0 +1,11 @@
+# Dockerfile-dev
+FROM php:8.2-cli
+
+# Installez l'extension MySQLi
+RUN docker-php-ext-install mysqli
+
+WORKDIR /app
+
+COPY ./src /app
+
+CMD ["php", "-S", "0.0.0.0:2024", "-d", "error_reporting=E_ALL"]
