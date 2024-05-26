@@ -1,1 +1,9 @@
-# TP_Web_php_dockerized
+# TP_Web_php_dockerized by me
+ **HOW TO USE IT**  
+Make sure you have Docker installed, and docker engine running.  
+Just run `docker-compose up --build`  in the root directory.  
+
+
+
+About it : 
+Ceci est un TP de dev web sur le php, de base on était sensé installer apache, php, php-myadmin, et mariadb sur nos machines et faire le tp comme ça. Je me suis dit que cela serait plus intéressant de proposer une version dockerisé "plug and play", pour ne plus avoir la lourdeur de l'installation de tout les services, et proposer une uniformisation de la configuration des services (genre éviter les problème de mdp par exemple). 😉
