@@ -42,22 +42,3 @@ if (isset($_POST['login_btn'])) {
 }
 
 
-// Get user info from user id
-function getUserById($id)
-{
-global $conn; //rendre disponible, à cette fonction, la variable de connexion $conn
-$sql = "SELECT username, role FROM users WHERE id = " . $id . ";"; // requête qui récupère le user et son rôle
-$result = mysqli_query($conn, $sql);
-var_dump($result);
-$user = mysqli_fetch_all($result, MYSQLI_ASSOC); //je met $result au format associatif
-return $user;
-}
-// escape value from form
-function esc(String $value)
-{
-// bring the global db connect object into function
-global $conn;
-$val = trim($value); // remove empty space sorrounding string
-$val = mysqli_real_escape_string($conn, $value);
-return $val;
-}
