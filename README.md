@@ -1,7 +1,8 @@
 # TP_Web_php_dockerized by me
  **HOW TO USE IT**  
 Make sure you have Docker installed, and docker engine running.  
-Just run `docker-compose up --build`  in the root directory.  
+Just run `./start_containers.sh`  in the root directory.  
+if you use Windows, you can start the script using the gitBash shell 😎  
 
 **PHP-myadmin** : `http://localhost:8080`  
 **PHP developpement server** : `http://localhost:2024`  
