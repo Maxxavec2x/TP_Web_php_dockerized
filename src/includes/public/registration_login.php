@@ -1,13 +1,13 @@
 <?php
-include('../../config.php');
+//include('../../config.php');
 // variable declaration
 $username = "";
 $email = "";
 $errors = array();
 // LOG USER IN
 if (isset($_POST['login_btn'])) {
-    $username = esc($_POST['username']);
-    $password = esc($_POST['password']);
+    $username = ($_POST['username']); // esc
+    $password = ($_POST['password']); // esc
     if (empty($username)) {
         array_push($errors, "Username required");
     }
@@ -42,6 +42,56 @@ if (isset($_POST['login_btn'])) {
             }
         } else {
             array_push($errors, 'Wrong credentials');
+        }
+    }
+}
+
+// REGISTER
+// TODO
+if (isset($_POST['register_btn'])) {
+    $username = ($_POST['username']); // esc
+    $mail = ($_POST['mail']);
+    $password = ($_POST['password']); // esc
+    $password2 = ($_POST['password2']);
+    if (empty($username)) {
+        array_push($errors, "Username required");
+    }
+    if (empty($mail)) {
+        array_push($errors, "Mail required");
+    }
+    if (empty($password) || empty($password2)) {
+        array_push($errors, "Two password entry required");
+    }
+    if ($password != $password2){
+        array_push($errors, "Passwords doesn't matched");
+    }
+
+    if (empty($errors)) {
+        $sql = "SELECT * FROM users WHERE username='$username' and email='$mail'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) == 0) {
+            // add user into database
+            $password = md5($password); // encrypt password
+            $sql = "INSERT INTO users (username, email, role, password) VALUES ('$username', '$mail', 'Author', '$password')";
+            $result = mysqli_query($conn, $sql);
+            $reg_id = mysqli_insert_id($conn);
+            $_SESSION['user'] = getUserById($reg_id);
+            // if user is admin, redirect to admin area
+            if ($_SESSION['user']['role'] == "Admin") {
+                $_SESSION['message'] = "You are now logged in";
+                //print("C BON TU EST CONNECTE EN ADMIN \n");
+                // redirect to admin area
+                header('location: ' . BASE_URL . '/admin/dashboard.php');
+                exit(0);
+            } if ($_SESSION['user']['role'] == "Author"){
+                $_SESSION['message'] = "You are now logged in";
+               // print("C BON TU EST CONNECTE EN USER \n");
+                // redirect to public area
+                header('location: index.php');
+                exit(0);
+            }
+        } else {
+            array_push($errors, 'User already exist');
         }
     }
 }

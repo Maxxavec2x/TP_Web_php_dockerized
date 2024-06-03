@@ -1,5 +1,8 @@
 <?php include('config.php'); ?>
 <?php include('includes/public/head_section.php'); ?>
+<?php include(ROOT_PATH . '/includes/public/registration_login.php'); ?>
+<?php include(ROOT_PATH . '/includes/all_functions.php'); ?>
+
 <title>MyWebSite | Home </title>
 
 </head>
@@ -24,6 +27,10 @@
 		<div class="content">
 			<h2 class="content-title">Recent Articles</h2>
 			<hr>
+			<?php foreach(getPublishedPosts() as $post){ ?>
+				<p><?php echo $post['title'];?></p>
+			<?php } ?>
+			
 
 			
 
