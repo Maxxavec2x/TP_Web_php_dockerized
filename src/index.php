@@ -31,6 +31,7 @@ include(ROOT_PATH . '/includes/all_functions.php');
 			<hr>
 			<?php foreach(getPublishedPosts() as $post){ ?>
 				<p><?php echo $post['title'];?></p>
+				<p><?php echo $post['topic'];?></p>
 			<?php } ?>
 		</div>
 		<!-- // content -->
