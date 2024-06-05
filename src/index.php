@@ -1,7 +1,9 @@
-<?php include('config.php'); ?>
-<?php include('includes/public/head_section.php'); ?>
-<?php include(ROOT_PATH . '/includes/public/registration_login.php'); ?>
-<?php include(ROOT_PATH . '/includes/all_functions.php'); ?>
+<?php
+include('config.php');
+include('includes/public/head_section.php');
+include(ROOT_PATH . '/includes/public/registration_login.php');
+include(ROOT_PATH . '/includes/all_functions.php');
+?>
 
 <title>MyWebSite | Home </title>
 
@@ -20,7 +22,7 @@
 		<!-- // Banner -->
 
 		<!-- Messages -->
-		
+
 		<!-- // Messages -->
 
 		<!-- content -->
@@ -30,12 +32,6 @@
 			<?php foreach(getPublishedPosts() as $post){ ?>
 				<p><?php echo $post['title'];?></p>
 			<?php } ?>
-			
-
-			
-
-
-
 		</div>
 		<!-- // content -->
 
@@ -47,3 +43,4 @@
 	<!-- Footer -->
 	<?php include(ROOT_PATH . '/includes/public/footer.php'); ?>
 	<!-- // Footer -->
+

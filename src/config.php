@@ -1,5 +1,6 @@
 <?php
 //Create session per user:
+ob_start();
 session_start();
 
 define('DB_TYPE', 'mysql');
