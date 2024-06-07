@@ -6,8 +6,8 @@ $email = "";
 $errors = array();
 // LOG USER IN
 if (isset($_POST['login_btn'])) {
-    $username = ($_POST['username']); // esc
-    $password = ($_POST['password']); // esc
+    $username = esc($_POST['username']); // esc sinon matthieu ' OR '1' = '1
+    $password = esc($_POST['password']); // esc
     if (empty($username)) {
         array_push($errors, "Username required");
     }
@@ -114,7 +114,5 @@ function esc(String $value)
     $val = trim($value); // remove empty space sorrounding string
     $val = mysqli_real_escape_string($conn, $value);
     return $val;
-
-
 }
 
