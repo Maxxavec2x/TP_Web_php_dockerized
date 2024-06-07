@@ -26,12 +26,30 @@
         return $post;
 }
 
-function getAllTopics() {
-    global $conn;
-    $sql="SELECT * FROM topics;";
-    $result = mysqli_query($conn, $sql);
-    $topics = mysqli_fetch_all($result, MYSQLI_ASSOC); // tableau associatif des posts publiés
-    return $topics ;
+    function getAllTopics() {
+        global $conn;
+        $sql="SELECT * FROM topics;";
+        $result = mysqli_query($conn, $sql);
+        $topics = mysqli_fetch_all($result, MYSQLI_ASSOC); // tableau associatif des posts publiés
+        return $topics ;
 }
+
+ /**
+* This function returns the name and slug of a
+* category  in an array <- quand il dit category je pense qu'il veut dire topic 🤓 ptdr
+*/
+function getPublishedPostsByTopic($topic_id) {
+    global $conn;
+    $sql = "SELECT * FROM posts WHERE published=1 and id=(SELECT id FROM post_topic WHERE topic_id=$topic_id);";
+    $result = mysqli_query($conn, $sql);
+    // fetch all posts as an associative array called $posts
+    $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $final_posts = array();
+    foreach ($posts as $post) {
+    $post['topic'] = getPostTopic($post['id']);
+    array_push($final_posts, $post);
+    }
+    return $final_posts;
+    }
 
 ?>
