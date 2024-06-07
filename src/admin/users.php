@@ -2,8 +2,13 @@
 <?php include(ROOT_PATH . '/includes/admin_functions.php'); ?>
 <?php include(ROOT_PATH . '/includes/admin/head_section.php'); ?>
 
-//BTW: ideally we need to create a role_user table (users<---->role_user<----->roles)
+<!-- //BTW: ideally we need to create a role_user table (users<->role_user<->roles)
 	// role_user(id, user_id,role_id)
+
+	^ C'est le prof qui a écrit ça btw, j'ai créé la table mais j'ai pas compris l'intérêt dans les fonctions getAdminRoles() et getAdminUsers() 🤔
+	Je pense que c'est bcp plus simple de query role et user directement. J'imagine que l'intérêt c'est de pouvoir créer des users avec plusieurs roles ?
+
+	-->
 <?php
 // Get all admin roles from DB : by admin roles i mean (Admin or Author)
 $roles = getAdminRoles(); // table roles
@@ -46,7 +51,7 @@ $admins = getAdminUsers(); // by admin roles i mean (Admin or Author), table use
 					<option value="" selected disabled>Assign role</option>
 					<?php foreach ($roles as $role) : ?>
 						<option value="<?php echo $role['id']; ?>">
-							<?php echo $role['role']; ?>
+							<?php echo $role['name']; ?>
 						</option>
 					<?php endforeach ?>
 				</select>
