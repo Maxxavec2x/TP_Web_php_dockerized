@@ -125,7 +125,6 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 --
 -- Dumping data for table `users`
 --
@@ -137,7 +136,31 @@ INSERT INTO `users` (`id`, `username`, `email`, `role`, `password`, `created_at`
 --
 -- Indexes for dumped tables
 --
+----------------------------------------------------------------------------------
+----------CREATION DE LA TABLE ROLE USER :
 
+
+ALTER TABLE roles ADD INDEX (id);
+ALTER TABLE users ADD INDEX (id);
+
+
+CREATE TABLE IF NOT EXISTS `role_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_ROLE_ID` (`role_id`),
+  KEY `FK_USER_ID` (`user_id`),
+  CONSTRAINT `FK_ROLE_ID` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_USER_ID` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+--------Remplissage :
+INSERT INTO role_user (role_id, user_id) VALUES (1, 1);
+INSERT INTO role_user (role_id, user_id) VALUES (2, 2);
+------A vérifier mdr
+------------------------------------------------------------------------------------
 --
 -- Indexes for table `posts`
 --
