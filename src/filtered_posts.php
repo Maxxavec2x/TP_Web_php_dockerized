@@ -4,7 +4,8 @@ include('includes/public/head_section.php');
 include(ROOT_PATH . '/includes/all_functions.php');
 ?>
 
-<title>MyWebSite | Topic : <?php $_GET['topic'] ?> </title>
+<title>MyWebSite | Topic </title>
+<!-- ça pourrait être cool d'afficher le topic en titre, mais de ce que je vois si on fait qqch à partir de la requête get on risque une ✨faille XSS✨, donc à voir 😪 -->
 
 </head>
 
