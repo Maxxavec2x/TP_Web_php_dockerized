@@ -2,8 +2,7 @@
 <?php include('includes/public/head_section.php'); ?>
 <?php include(ROOT_PATH . '/includes/public/registration_login.php'); ?>
 <title>MyWebSite | Resgister </title>
-
-<div class="login_div">
+<div class="register_div">
     <form action="<?php echo BASE_URL . 'register.php'; ?>" method="post">
         <h2>Register on MyWebSite</h2>
         <div style="width: 60%; margin: 0px auto;">
@@ -16,7 +15,6 @@
         <button class="btn" type="submit" name="register_btn">Register</button>
     </form>
 </div>
-
 <p>
     Already a member? <a href="login.php">Sign in</a>
 </p>
