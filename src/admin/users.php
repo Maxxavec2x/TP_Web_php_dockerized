@@ -41,9 +41,9 @@ $admins = getAdminUsers(); // by admin roles i mean (Admin or Author), table use
 					<input type="hidden" name="admin_id" value="<?php echo $admin_id; ?>">
 				<?php endif ?>
 
-				<input type="text" name="username" value="<?php echo $username; ?>" placeholder="Username">
+				<input type="text" name="username" value="<?php echo $username; ?>" placeholder="Username" value="<?php if (isset($username)) echo $username;?>">
 
-				<input type="email" name="email" value="<?php echo $email ?>" placeholder="Email">
+				<input type="email" name="email" value="<?php echo $email ?>" placeholder="Email" value="<?php if (isset($email)) echo $email;?>">
 				<input type="password" name="password" placeholder="Password">
 				<input type="password" name="passwordConfirmation" placeholder="Password confirmation">
 
