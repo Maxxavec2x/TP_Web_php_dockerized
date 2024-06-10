@@ -23,7 +23,7 @@ include(ROOT_PATH . '/includes/all_functions.php');
 			<hr>
 			<?php foreach(getPublishedPostsByTopic($_GET['topic']) as $post){ ?>
 				<div class="post" style="margin-left: 0px;">
-					<p class="category"><?php echo $post['topic'];?></p>
+					<p class="category"><?php echo $post['topic']['name'];?></p>
 					<img src="static/images/<?php echo 'post_image' . $post['id'] . '.jpg';?>" alt="Alternative" class="post_image">
 					<div class="post_info">
 						<h4><?php echo $post['title'];?></h4>
