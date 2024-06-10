@@ -16,7 +16,7 @@ $errors = [];
 - - - - - - - - - - -*/
 // if user clicks the create admin button
 if (isset($_POST['create_admin'])) {
-//createAdmin($_POST); //TODO
+    createAdmin($_POST); //TODO
 }
 //-----------------
 
@@ -36,5 +36,43 @@ function getAdminUsers() {
     $AdminUsers = mysqli_fetch_all($result, MYSQLI_ASSOC);
     return $AdminUsers;
 }
+
+/* * * * * * * * * * * * * * * * * * * * * * *
+* - Receives new admin data from form
+* - Create new admin user
+* - Returns all admin users with their roles
+* * * * * * * * * * * * * * * * * * * * * * */
+function createAdmin($request_values){ 
+    global $conn, $errors, $username, $email;
+    $username = $request_values['username'];
+    $email = $request_values['email'];
+    $password = $request_values['password'];
+    
+    var_dump($username);
+    if ($request_values['role_id'] == 1) {
+        $role = 'Admin';
+        var_dump("Le role id est " . $role);
+    }
+    else {
+        $role = 'Author';
+    }
+    if (empty($errors)) { //test si il existe déjà
+        $sql = "SELECT * FROM users WHERE username='$username' and email='$email'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) == 0) {
+            // add user into database
+            $password = md5($password); // encrypt password
+            $sql = "INSERT INTO users (username, email, role, password) VALUES ('$username', '$email', '$role', '$password')";
+            $result = mysqli_query($conn, $sql);
+        } else {
+            array_push($errors, 'User already exist');
+        }
+    }
+
+
+    $_SESSION['message'] = "Admin user created successfully";
+    header('location: users.php');
+    exit(0);
+    }
 
 ?>
