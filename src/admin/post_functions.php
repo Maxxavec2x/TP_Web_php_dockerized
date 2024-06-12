@@ -28,6 +28,19 @@ if (isset($_POST['update_post'])) {
 - Post functions
 - - - - - - - - - - -*/
 
+function uploadImage() {
+    $uploads_dir = ROOT_PATH . '/static/images';
+    $error = $_FILES["featured_image"]['error'];
+        if ($error == UPLOAD_ERR_OK) {
+            $tmp_name = $_FILES["featured_image"]["tmp_name"];
+            // basename() may prevent filesystem traversal attacks;
+            // further validation/sanitation of the filename may be appropriate
+            $name = basename($_FILES["featured_image"]["name"]);
+            if (move_uploaded_file($tmp_name, "$uploads_dir/$name"));
+            echo "IMAGE UPLOADE";
+        }
+}
+
 // get all posts from WEBLOG DATABASE
 function getAllPosts() {
     global $conn;
@@ -86,10 +99,13 @@ function createPost($request_values) {
     $sql = "INSERT INTO `posts` (`user_id`, `title`, `slug`, `image`, `body`, `published`, `views`, `created_at`, `updated_at`) 
     VALUES ($user_id, '$title', '$slug', '$featured_image', '$body', $published, 0, '$currentDate', '$currentDate');";
     //todo recup user id avec requete sql
-    if ($result = mysqli_query($conn, $sql))
-    $_SESSION['message'] = "Post created successfully";
-    header('location: posts.php');
-    exit(0);
+    if ($result = mysqli_query($conn, $sql)) {
+        uploadImage();
+        $_SESSION['message'] = "Post created successfully";
+        header('location: posts.php');
+        exit(0);
+    }
+   
     }
     $_SESSION['message'] = "Erreur : Post not created";
 }
