@@ -1,7 +1,7 @@
 <?php  include('../config.php'); ?>
 <?php  include(ROOT_PATH . '/includes/admin_functions.php'); ?>
 <?php  include(ROOT_PATH . '/admin/post_functions.php'); ?>
-
+<?php include (ROOT_PATH . '/includes/all_functions.php'); ?>
 <?php include(ROOT_PATH . '/includes/admin/head_section.php'); ?>
 
 <?php 
