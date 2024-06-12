@@ -22,6 +22,15 @@ if (isset($_POST['create_post'])) {
 if (isset($_POST['update_post'])) {
     updatePost($_POST);
 }
+
+if (isset($_GET['unpublish'])) {
+    togglePublishPost($_GET['unpublish'], "Toggle published state on post");
+}
+
+if (isset($_GET['delete-post'])) {
+    deletePost($_GET['delete-post']);
+}
+
 //-----------------
 
 /* - - - - - - - - - -
@@ -93,14 +102,14 @@ function getPostID($title) {
 
 function createPost($request_values) {
     global $conn, $errors, $title, $featured_image, $topic_id, $body, $published;
-    
+
     $title = $request_values['title'];
     $image = $_FILES;
     $featured_image = $image['featured_image']['name'];
     if (isset($request_values['topic_id'])) {
         $topic_id = $request_values['topic_id'];
     }
-    
+
     $body = $request_values['body'];
     $published = 1; //1 for test
     $slug = createSlug($title);
@@ -119,10 +128,9 @@ function createPost($request_values) {
     if (empty($featured_image) ) {
         array_push($errors, 'No image entered');
     }
-   
+
     if (empty($errors)) {
-    
-   
+
     // ^ Je sais que c'est dégueulasse, mais t'avais qu'a le faire 😎
     $sql = "INSERT INTO `posts` (`user_id`, `title`, `slug`, `image`, `body`, `published`, `views`, `created_at`, `updated_at`) 
     VALUES ($user_id, '$title', '$slug', '$featured_image', '$body', $published, 0, '$currentDate', '$currentDate');";

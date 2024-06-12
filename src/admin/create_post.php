@@ -4,9 +4,9 @@
 <?php include (ROOT_PATH . '/includes/all_functions.php'); ?>
 <?php include(ROOT_PATH . '/includes/admin/head_section.php'); ?>
 
-<?php 
+<?php
 	// Get all topics
-	$topics = getAllTopics();	
+	$topics = getAllTopics();
 
 ?>
 
@@ -18,7 +18,7 @@
 	<?php include(ROOT_PATH . '/includes/admin/header.php') ?>
 
 	<div class="container content">
-		
+
 		<!-- Left side menu -->
 		<?php include(ROOT_PATH . '/includes/admin/menu.php') ?>
 
@@ -36,20 +36,20 @@
 					<input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
 				<?php endif ?>
 
-				<input 
+				<input
 					type="text"
 					name="title"
-					value="<?php echo $title; ?>" 
+					value="<?php echo $title; ?>"
 					placeholder="Title">
 
 				<label style="float: left; margin: 5px auto 5px;">Featured image</label>
-				<input 
+				<input
 					type="file"
 					name="featured_image"
 					>
 
 				<textarea name="body" id="body" cols="30" rows="10"><?php echo $body; ?></textarea>
-				
+
 				<select name="topic_id">
 					<option value="" selected disabled>Choose topic</option>
 					<?php foreach ($topics as $topic): ?>
@@ -58,9 +58,9 @@
 						</option>
 					<?php endforeach ?>
 				</select>
-				
+
 				<!-- if editing post, display the update button instead of create button -->
-				<?php if ($isEditingPost === true): ?> 
+				<?php if ($isEditingPost === true): ?>
 					<button type="submit" class="btn" name="update_post">UPDATE</button>
 				<?php else: ?>
 					<button type="submit" class="btn" name="create_post">Save Post</button>

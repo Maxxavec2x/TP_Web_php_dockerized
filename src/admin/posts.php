@@ -54,7 +54,6 @@ $admins = getAdminUsers(); // by admin roles i mean (Admin or Author), table use
                     <td><?php echo $post['title']; ?></td>
                     <td><?php echo $post['views']; ?></td>
                     <td>
-                       
                         <a class="fa fa-pencil btn unpublish" href="posts.php?unpublish=<?php echo $post['id'] ?>">
                         </a>
                     </td>
