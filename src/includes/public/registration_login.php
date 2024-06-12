@@ -6,8 +6,8 @@ $email = "";
 $errors = array();
 // LOG USER IN
 if (isset($_POST['login_btn'])) {
-    $username = esc($_POST['username']); // esc sinon matthieu ' OR '1' = '1
-    $password = esc($_POST['password']); // esc
+    $username = esc($_POST['username']); 
+    $password = esc($_POST['password']);
     if (empty($username)) {
         array_push($errors, "Username required");
     }
@@ -16,26 +16,21 @@ if (isset($_POST['login_btn'])) {
     }
     if (empty($errors)) {
         $password = md5($password); // encrypt password
-        //var_dump($password);
         $sql = "SELECT * FROM users WHERE username='$username' and password='$password' LIMIT 1";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             // get id of created user
             $reg_user_id = mysqli_fetch_assoc($result)['id'];
-            //var_dump(getUserById($reg_user_id)); die();
             // put logged in user into session array
             $_SESSION['user'] = getUserById($reg_user_id);
-            //var_dump($_SESSION['user'] );
             // if user is admin, redirect to admin area
             if (in_array($_SESSION['user']['role'], ["Admin", "Author"])) {
                 $_SESSION['message'] = "You are now logged in";
-                //print("C BON TU EST CONNECTE EN ADMIN \n");
                 // redirect to admin area
                 header('location: ' . BASE_URL . '/admin/dashboard.php');
                 exit(0);
             } else {
                 $_SESSION['message'] = "You are now logged in";
-               // print("C BON TU EST CONNECTE EN USER \n");
                 // redirect to public area
                 header('location: index.php');
                 exit(0);
@@ -49,9 +44,9 @@ if (isset($_POST['login_btn'])) {
 // REGISTER
 // TODO
 if (isset($_POST['register_btn'])) {
-    $username = ($_POST['username']); // esc
+    $username = ($_POST['username']);
     $mail = ($_POST['mail']);
-    $password = ($_POST['password']); // esc
+    $password = ($_POST['password']);
     $password2 = ($_POST['password2']);
     if (empty($username)) {
         array_push($errors, "Username required");
@@ -79,13 +74,11 @@ if (isset($_POST['register_btn'])) {
             // if user is admin, redirect to admin area
             if ($_SESSION['user']['role'] == "Admin") {
                 $_SESSION['message'] = "You are now logged in";
-                //print("C BON TU EST CONNECTE EN ADMIN \n");
                 // redirect to admin area
                 header('location: ' . BASE_URL . '/admin/dashboard.php');
                 exit(0);
             } if ($_SESSION['user']['role'] == "Author"){
                 $_SESSION['message'] = "You are now logged in";
-               // print("C BON TU EST CONNECTE EN USER \n");
                 // redirect to public area
                 header('location: index.php');
                 exit(0);
