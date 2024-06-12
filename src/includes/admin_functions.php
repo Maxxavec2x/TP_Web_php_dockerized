@@ -142,4 +142,8 @@ function updateAdmin($request_values){
     exit(0);
 }
 
+function createSlug($title) {
+    return str_replace(' ', '-', strtolower($title)); //skinny cette fonction 😆
+}
+
 ?>
