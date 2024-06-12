@@ -32,7 +32,7 @@ include(ROOT_PATH . '/includes/all_functions.php');
 			<?php foreach(getPublishedPosts() as $post){ ?>
 				<div class="post" style="margin-left: 0px;">
 					<p class="category"><?php echo $post['topic'];?></p>
-					<img src="static/images/<?php echo 'post_image' . $post['id'] . '.jpg';?>" alt="Alternative" class="post_image">
+					<img src="static/images/<?php echo $post['image']; ?>" alt="Alternative" class="post_image">
 					<div class="post_info">
 						<h4><?php echo $post['title'];?></h4>
 						<span><?php echo $post['updated_at'];?></span>
