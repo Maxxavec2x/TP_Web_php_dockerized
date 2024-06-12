@@ -63,6 +63,34 @@ function getCurrentuserID() {
     return $id;
 }
 
+function getMaxIDFromTable($tableName) { 
+    global $conn;
+    $query = "SELECT MAX(id) FROM $tableName";
+    $result = mysqli_query($conn,  $query);
+    $row = mysqli_fetch_row($result);
+    return $row[0];
+}
+
+function updateTablePostTopic($post_id, $topic_id) { //TODO ajouter l'auto incrémentation de user_topic
+    global $conn;
+    $newId = getMaxIDFromTable('post_topic') + 1;
+    $sql =  "INSERT INTO `post_topic` (`id`, `post_id`, `topic_id`) 
+    VALUES ($newId, $post_id, '$topic_id');";
+    if ($result = mysqli_query($conn, $sql)) {
+        echo "table post_topic updated";
+        return 1;
+    }
+    return 0;
+}
+
+function getPostID($title) {
+    global $conn;
+    $sql = "SELECT id from posts where title='$title';";
+    $result = mysqli_query($conn, $sql);
+    $id = mysqli_fetch_assoc($result);
+    return $id;
+}
+
 function createPost($request_values) {
     global $conn, $errors, $title, $featured_image, $topic_id, $body, $published;
     
@@ -74,7 +102,7 @@ function createPost($request_values) {
     }
     
     $body = $request_values['body'];
-    $published = 0;
+    $published = 1; //1 for test
     $slug = createSlug($title);
     $currentDate = date("Y-m-d H:i:s");
     $user_id = getCurrentuserID()['id'];
@@ -100,12 +128,14 @@ function createPost($request_values) {
     VALUES ($user_id, '$title', '$slug', '$featured_image', '$body', $published, 0, '$currentDate', '$currentDate');";
     //todo recup user id avec requete sql
     if ($result = mysqli_query($conn, $sql)) {
-        uploadImage();
-        $_SESSION['message'] = "Post created successfully";
-        header('location: posts.php');
-        exit(0);
+        $post_id = getPostID($title)['id'];
+        if (updateTablePostTopic($post_id, $topic_id)) {
+            uploadImage();
+            $_SESSION['message'] = "Post created successfully";
+            header('location: posts.php');
+            exit(0);
+        }
     }
-   
     }
     $_SESSION['message'] = "Erreur : Post not created";
 }
