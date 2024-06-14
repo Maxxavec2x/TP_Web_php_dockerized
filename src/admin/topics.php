@@ -38,7 +38,7 @@ $topics = getAllTopics(); // table roles
 
 				<!-- if editing user, the id is required to identify that user -->
 				<?php if ($isEditingTopic === true) : ?>
-					<input type="hidden" name="admin_id" value="<?php echo $admin_id; ?>">
+					<input type="hidden" name="topic_id" value="<?php echo $topic_id; ?>">
 				<?php endif ?>
 
 				<input type="text" name="topicName" placeholder="Topic" value="<?php echo $topic_name;?>">
