@@ -31,6 +31,13 @@ if (isset($_GET['delete-post'])) {
     deletePost($_GET['delete-post']);
 }
 
+if (isset($_GET['edit-post'])){
+    editPost(($_GET['edit-post']));
+}
+
+if (isset($_POST['update_post'])){
+    updatePost($_POST['update_post']);
+}
 //-----------------
 
 /* - - - - - - - - - -
@@ -68,7 +75,6 @@ function getCurrentuserID() {
     $sql = "SELECT id from users where username='$username';";
     $result = mysqli_query($conn, $sql);
     $id = mysqli_fetch_assoc($result);
-    var_dump($id);
     return $id;
 }
 
@@ -163,10 +169,51 @@ function getPostAuthorById($user_id) {
 
 function editPost($role_id) {
     global $conn, $title, $post_slug, $body, $isEditingPost, $post_id;
+    $sql = "SELECT title, slug, body FROM posts WHERE id='$role_id'";
+    $result = mysqli_query($conn, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $result = $result[0];
+    $title = $result['title'];
+    $post_slug = $result['slug'];
+    $body = $result['body'];
+    $isEditingPost = true;
+    $post_id = $role_id;
 }
 
 function updatePost($request_values) {
-    global $conn, $errors, $post_id, $title, $featured_image, $topic_id, $body, $published;
+    global $conn, $errors, $post_id, $title, $featured_image, $topic_id, $body, $published, $isEditingPost;
+    $title = $request_values['title'];
+    $image = $_FILES;
+    $featured_image = $image['featured_image']['name'];
+    $topic_id = $request_values['topic_id'];
+    $body = $request_values['body'];
+    $post_id = $request_values['post_id'];
+
+    if (empty($title) ) {
+        array_push($errors, 'No title entered');
+    }
+    if (empty($body) ) {
+        array_push($errors, 'No body entered');
+    }
+    if (empty($topic_id) ) {
+        array_push($errors, 'No topic entered');
+    }
+    if (empty($featured_image) ) {
+        array_push($errors, 'No image entered');
+    }
+    // Upadate SQL
+    if (empty($errors)) {
+        $sql = "UPDATE posts SET title='$title', image='$featured_image', body='$body' WHERE id='$post_id'";
+        if (mysqli_query($conn, $sql) and updateTablePostTopic($post_id, $topic_id)) {
+            $_SESSION['message'] = "Post updated successfully";
+            $isEditingPost = false;
+            header('location: posts.php');
+        } else {
+            array_push($errors, 'SQL error');
+        }
+    }
+    exit(0);
+
 }
 
 // delete blog post
