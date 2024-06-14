@@ -52,4 +52,13 @@ function getPublishedPostsByTopic($topic_id) {
     return $final_posts;
     }
 
+    function getMaxIDFromTable($tableName) { 
+        global $conn;
+        $query = "SELECT MAX(id) FROM $tableName";
+        $result = mysqli_query($conn,  $query);
+        $row = mysqli_fetch_row($result);
+        return $row[0];
+    }
+
+
 ?>

@@ -24,6 +24,10 @@ if (isset($_GET['edit-admin'])) {
 if (isset($_POST['update_admin'])) {
     updateAdmin($_POST);
 }
+
+if (isset($_POST['create_topic'])) {
+    create_topic($_POST);
+}
 //-----------------
 
 
@@ -144,6 +148,43 @@ function updateAdmin($request_values){
 
 function createSlug($title) {
     return str_replace(' ', '-', strtolower($title)); //skinny cette fonction 😆
+}
+
+function create_topic($request_values)
+{
+
+    global $conn, $errors, $topic_name;
+    $topic_name = $request_values['topicName'];
+    $topic_slug = createSlug($topic_name);
+    $topic_id = getMaxIDFromTable('topics') + 1;
+    var_dump($topic_name); var_dump($topic_slug); 
+    if (empty($topic_name)) {
+        array_push($errors, 'Topic name not entered');
+        var_dump($errors);
+    }
+    // var_dump($errors);
+    // die();
+    if (empty($errors)) { //test si il existe déjà
+        $sql = "SELECT * FROM topics WHERE name='$topic_name'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) == 0) {
+            // add user into database
+            $sql = "INSERT INTO topics (id, name, slug) VALUES ('$topic_id', '$topic_name', '$topic_slug')";
+            $result = mysqli_query($conn, $sql);
+            var_dump($result); 
+        } else {
+            array_push($errors, 'topic already exist');
+            exit(0);
+        }
+        $_SESSION['message'] = "Topic created successfully";
+        header('location: topics.php');
+        exit(0);
+    }
+    $_SESSION['message'] = "Topic NOT created successfully";
+    array_push($errors, 'Topic not created');
+    header('location: topics.php');
+    exit(0);
+   
 }
 
 ?>

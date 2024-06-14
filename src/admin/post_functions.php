@@ -72,13 +72,7 @@ function getCurrentuserID() {
     return $id;
 }
 
-function getMaxIDFromTable($tableName) { 
-    global $conn;
-    $query = "SELECT MAX(id) FROM $tableName";
-    $result = mysqli_query($conn,  $query);
-    $row = mysqli_fetch_row($result);
-    return $row[0];
-}
+
 
 function updateTablePostTopic($post_id, $topic_id) { //TODO ajouter l'auto incrémentation de user_topic
     global $conn;
