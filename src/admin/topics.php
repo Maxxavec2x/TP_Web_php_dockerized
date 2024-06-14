@@ -77,11 +77,11 @@ $topics = getAllTopics(); // table roles
 									<?php echo $topic['name']; ?>, &nbsp;
 								</td>
 								<td>
-									<a class="fa fa-pencil btn edit" href="users.php?edit-topic=<?php echo $topic['id'] ?>">
+									<a class="fa fa-pencil btn edit" href="topics.php?edit-topic=<?php echo $topic['id'] ?>">
 									</a>
 								</td>
 								<td>
-									<a class="fa fa-trash btn delete" href="users.php?delete-topic=<?php echo $topic['id'] ?>">
+									<a class="fa fa-trash btn delete" href="topics.php?delete-topic=<?php echo $topic['id'] ?>">
 									</a>
 								</td>
 							</tr>

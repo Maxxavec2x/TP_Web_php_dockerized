@@ -28,6 +28,10 @@ if (isset($_POST['update_admin'])) {
 if (isset($_POST['create_topic'])) {
     create_topic($_POST);
 }
+
+if (isset($_GET['delete-topic'])) {
+    deleteTopic($_GET['delete-topic']);
+}
 //-----------------
 
 
@@ -185,6 +189,16 @@ function create_topic($request_values)
     header('location: topics.php');
     exit(0);
    
+}
+
+function deleteTopic($topic_id) {
+    global $conn;
+    $sql = "DELETE FROM topics WHERE id=$topic_id";
+    if (mysqli_query($conn, $sql)) {
+        $_SESSION['message'] = "Topic successfully deleted";
+        header("location: topics.php");
+        exit(0);
+    }
 }
 
 ?>
