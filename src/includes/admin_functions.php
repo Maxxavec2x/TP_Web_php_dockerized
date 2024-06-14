@@ -32,6 +32,12 @@ if (isset($_POST['create_topic'])) {
 if (isset($_GET['delete-topic'])) {
     deleteTopic($_GET['delete-topic']);
 }
+if (isset($_GET['edit-topic'])) {
+    editTopic($_GET['edit-topic']);
+}
+if (isset($_POST['update_topic'])){
+    updateTopic($_POST);
+}
 //-----------------
 
 
@@ -201,4 +207,38 @@ function deleteTopic($topic_id) {
     }
 }
 
+
+function editTopic($t_id){
+    global $conn, $isEditingTopic, $topic_name, $topic_id;
+    $topic_id = $t_id;
+    $sql = "SELECT name FROM topics WHERE id='$topic_id'";
+    $result = mysqli_query($conn, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    $topic_name = $result[0]['name'];
+    $isEditingTopic = true;
+}
+
+function updateTopic($request_values) {
+    global $conn, $isEditingTopic, $topic_name, $topic_id;
+    $topic_name = $request_values['topicName'];
+    $topic_id = $request_values['topic_id'];
+
+    if (empty($topic_name) ) {
+        array_push($errors, 'No topic entered');
+    }
+    // Upadate SQL
+    if (empty($errors)) {
+        $sql = "UPDATE topics SET name='$topic_name' WHERE id='$topic_id'";
+        if (mysqli_query($conn, $sql)) {
+            $_SESSION['message'] = "Topic updated successfully";
+            $isEditingTopic = false;
+            header('location: topics.php');
+        } else {
+            array_push($errors, 'SQL error');
+        }
+    }
+    exit(0);
+
+}
 ?>
