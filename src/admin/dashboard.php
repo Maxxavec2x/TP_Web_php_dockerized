@@ -1,4 +1,5 @@
 <?php include('../config.php'); ?>
+<?php include(ROOT_PATH . '/includes/all_functions.php'); ?>
 <?php include(ROOT_PATH . '/includes/admin_functions.php'); ?>
 <?php include(ROOT_PATH . '/includes/admin/head_section.php'); ?>
 <title>Admin | Dashboard</title>
@@ -26,11 +27,11 @@
 				<span>Newly registered users</span>
 			</a>
 			<a href="posts.php">
-				<span>43</span> <br>
+				<span> <?php echo sizeof(getPublishedPosts()) ?> </span> <br>
 				<span>Published posts</span>
 			</a>
 			<a>
-				<span>43</span> <br>
+				<span> 42 </span> <br>
 				<span>Published comments</span>
 			</a>
 		</div>
