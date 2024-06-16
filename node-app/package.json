@@ -1,0 +1,12 @@
+{
+    "name": "serveur-requetant",
+    "version": "1.0.0",
+    "description": "Le serveur permettant de chopper les statistiques de MyWebsite",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "ajax": "^0.0.4"
+    }
+}
