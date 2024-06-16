@@ -49,6 +49,17 @@ services:
     networks:
       - lamp_network
 
+  nodejs:
+    image: node:latest
+    container_name: nodejs_app
+    volumes:
+      - ./node-app:/usr/src/app
+    working_dir: /usr/src/app
+    command: sh -c "npm install && npm install ajax && npm start"
+    ports:
+      - "3000:3000"
+    networks:
+      - lamp_network
 volumes:
   db_data:
 
