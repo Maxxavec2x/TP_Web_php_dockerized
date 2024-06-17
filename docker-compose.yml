@@ -55,9 +55,9 @@ services:
     volumes:
       - ./node-app:/usr/src/app
     working_dir: /usr/src/app
-    command: sh -c "npm install && npm install ajax && npm start"
+    command: sh -c "npm install && npm install ajax && npm install axios && npm install express && npm install nodemon --global && nodemon index.js"
     ports:
-      - "3000:3000"
+      - "3001:3000"
     networks:
       - lamp_network
 volumes:
