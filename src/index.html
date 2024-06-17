@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="posts-container"></div>
+
+    <script>
+        $(document).ready(function() {
+            console.log("hello");
+            $.ajax({
+                url: 'api.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    var postsContainer = $('#posts-container');
+                    response.forEach(function(post) {
+                        postsContainer.append('<h2>' + post.title + '</h2>');
+                        postsContainer.append(post.body);
+                        postsContainer.append('<p>Topic: ' + post.topic + '</p>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

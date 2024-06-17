@@ -22,6 +22,9 @@ RUN a2enmod rewrite
 # Copy the local code to the container
 COPY src/ /var/www/html/
 
+# Copier la configuration Apache personnalisée (test chatGPT)
+COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+
 # Set working directory
 WORKDIR /var/www/html
 
