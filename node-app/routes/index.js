@@ -4,7 +4,7 @@ const { fetchData } = require('../api');
 
 // Define the root route
 router.get('/', async (req, res) => {
-  const url = 'https://jsonplaceholder.typicode.com/users';
+  const url = 'http://web/API.php';
   try {
     const data = await fetchData(url);
     res.send(`Fetched Data: ${JSON.stringify(data, null, 2)}`);
