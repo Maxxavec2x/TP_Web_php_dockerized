@@ -1,12 +1,18 @@
 {
-    "name": "serveur-requetant",
+    "name": "node-app",
     "version": "1.0.0",
-    "description": "Le serveur permettant de chopper les statistiques de MyWebsite",
+    "description": "A simple Node.js application with Express",
     "main": "index.js",
     "scripts": {
-        "start": "node index.js"
+        "start": "node index.js",
+        "dev": "nodemon index.js"
     },
     "dependencies": {
-        "ajax": "^0.0.4"
+        "ajax": "^0.0.4",
+        "axios": "^1.7.2",
+        "express": "^4.19.2"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.0"
     }
 }
