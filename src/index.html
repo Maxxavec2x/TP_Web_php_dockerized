@@ -6,19 +6,22 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    <h1>La sortie de l'API</h1>
     <div id="posts-container"></div>
 
     <script>
         $(document).ready(function() {
-            console.log("hello");
             $.ajax({
-                url: 'api.php',
+                url: 'API.php',
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
                     var postsContainer = $('#posts-container');
+                    let i = 1;
                     response.forEach(function(post) {
+                        postsContainer.append("<h2>Post n°" + i++ + "</h2>");
                         postsContainer.append('<h2>' + post.title + '</h2>');
+                        postsContainer.append('<img src="./static/images/' + post.image + '" width=300">');
                         postsContainer.append(post.body);
                         postsContainer.append('<p>Topic: ' + post.topic + '</p>');
                     });

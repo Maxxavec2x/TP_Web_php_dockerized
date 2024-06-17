@@ -52,8 +52,12 @@ function uploadImage() {
             // basename() may prevent filesystem traversal attacks;
             // further validation/sanitation of the filename may be appropriate
             $name = basename($_FILES["featured_image"]["name"]);
-            if (move_uploaded_file($tmp_name, "$uploads_dir/$name"));
-            echo "IMAGE UPLOADE";
+            move_uploaded_file($tmp_name, "$uploads_dir/$name");
+            return 1;
+        }
+        else{
+            array_push($errors, "Image wasn't upload correctly, it can't be seen by users in your post");
+            return 0;
         }
 }
 
@@ -61,43 +65,59 @@ function uploadImage() {
 function getAllPosts() {
     global $conn;
     $sql = "SELECT * FROM posts";
-    $result = mysqli_query($conn, $sql);
-    $posts = mysqli_fetch_all($result, MYSQLI_ASSOC); // tableau associatif des posts publiés
-    foreach ($posts as &$post) {
-        $post['author'] = getPostAuthorById($post['user_id']);
+    if ($result = mysqli_query($conn, $sql)){
+        $posts = mysqli_fetch_all($result, MYSQLI_ASSOC); // tableau associatif des posts publiés
+        foreach ($posts as &$post) {
+            $post['author'] = getPostAuthorById($post['user_id']);
+        }
+        return $posts;
     }
-    return $posts;
+    else{
+        array_push($errors, "SQL error");
+        return 0;
+    }
+    
 }
 
 function getCurrentuserID() {
     global $conn;
     $username = $_SESSION['user']['username'];
     $sql = "SELECT id from users where username='$username';";
-    $result = mysqli_query($conn, $sql);
-    $id = mysqli_fetch_assoc($result);
-    return $id;
+    if ($result = mysqli_query($conn, $sql)){
+        return mysqli_fetch_assoc($result);
+    }
+    else{
+        array_push($errors, "SQL error, user may not exist");
+        return 0;
+    }
 }
 
 
 
-function updateTablePostTopic($post_id, $topic_id) { //TODO ajouter l'auto incrémentation de user_topic
+function updateTablePostTopic($post_id, $topic_id) {
     global $conn;
     $newId = getMaxIDFromTable('post_topic') + 1;
     $sql =  "INSERT INTO `post_topic` (`id`, `post_id`, `topic_id`) 
     VALUES ($newId, $post_id, '$topic_id');";
-    if ($result = mysqli_query($conn, $sql)) {
-        echo "table post_topic updated";
+    if (mysqli_query($conn, $sql)) {
         return 1;
     }
-    return 0;
+    else{
+        array_push($errors, "SQL error, post or topic may not exist");
+        return 0;
+    }
 }
 
 function getPostID($title) {
     global $conn;
     $sql = "SELECT id from posts where title='$title';";
-    $result = mysqli_query($conn, $sql);
-    $id = mysqli_fetch_assoc($result);
-    return $id;
+    if ($result = mysqli_query($conn, $sql)){
+        return mysqli_fetch_assoc($result);
+    }
+    else{
+        array_push($errors, "SQL error, post may not exist");
+        return 0;
+    }
 }
 
 function createPost($request_values) {
@@ -111,7 +131,7 @@ function createPost($request_values) {
     }
 
     $body = $request_values['body'];
-    $published = 1; //1 for test
+    $published = 1;
     $slug = createSlug($title);
     $currentDate = date("Y-m-d H:i:s");
     $user_id = getCurrentuserID()['id'];
@@ -130,20 +150,18 @@ function createPost($request_values) {
     }
 
     if (empty($errors)) {
-
-    // ^ Je sais que c'est dégueulasse, mais t'avais qu'a le faire 😎
-    $sql = "INSERT INTO `posts` (`user_id`, `title`, `slug`, `image`, `body`, `published`, `views`, `created_at`, `updated_at`) 
-    VALUES ($user_id, '$title', '$slug', '$featured_image', '$body', $published, 0, '$currentDate', '$currentDate');";
-    //todo recup user id avec requete sql
-    if ($result = mysqli_query($conn, $sql)) {
-        $post_id = getPostID($title)['id'];
-        if (updateTablePostTopic($post_id, $topic_id)) {
-            uploadImage();
-            $_SESSION['message'] = "Post created successfully";
-            header('location: posts.php');
-            exit(0);
+        $sql = "INSERT INTO `posts` (`user_id`, `title`, `slug`, `image`, `body`, `published`, `views`, `created_at`, `updated_at`) 
+        VALUES ($user_id, '$title', '$slug', '$featured_image', '$body', $published, 0, '$currentDate', '$currentDate');";
+        //todo recup user id avec requete sql
+        if (mysqli_query($conn, $sql)) {
+            $post_id = getPostID($title)['id'];
+            if (updateTablePostTopic($post_id, $topic_id)) {
+                uploadImage();
+                $_SESSION['message'] = "Post created successfully";
+                header('location: posts.php');
+                exit(0);
+            }
         }
-    }
     }
     $_SESSION['message'] = "Erreur : Post not created";
 }
@@ -152,12 +170,12 @@ function createPost($request_values) {
 function getPostAuthorById($user_id) {
     global $conn;
     $sql = "SELECT username FROM users WHERE id=$user_id";
-    $result = mysqli_query($conn, $sql);
-    if ($result) {
+    if ($result = mysqli_query($conn, $sql)) {
         // return username
         return mysqli_fetch_assoc($result)['username'];
     } else {
-        return null;
+        array_push($errors, "SQL error, user may not exist");
+        return 0;
     }
 }
 

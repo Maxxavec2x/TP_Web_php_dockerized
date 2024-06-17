@@ -18,6 +18,9 @@ $errors = [];
 if (isset($_POST['create_admin'])) {
     createAdmin($_POST);
 }
+if (isset($_GET['delete-admin'])) {
+    deleteAdmin($_GET['delete-admin']);
+}
 if (isset($_GET['edit-admin'])) {
     editAdmin($_GET['edit-admin']);
 }
@@ -28,7 +31,6 @@ if (isset($_POST['update_admin'])) {
 if (isset($_POST['create_topic'])) {
     create_topic($_POST);
 }
-
 if (isset($_GET['delete-topic'])) {
     deleteTopic($_GET['delete-topic']);
 }
@@ -100,6 +102,19 @@ function createAdmin($request_values){
     exit(0);
     }
 
+function deleteAdmin($admin_id){
+    global $conn;
+    $sql = "DELETE FROM posts WHERE user_id=$admin_id";
+    if (mysqli_query($conn, $sql)) {
+        $sql = "DELETE FROM users WHERE id=$admin_id";
+        if (mysqli_query($conn, $sql)) {
+            $_SESSION['message'] = "Admin successfully deleted";
+            header("location: users.php");
+            exit(0);
+        }
+    }
+}
+
 /* * * * * * * * * * * * * * * * * * * * *
 * - Takes admin id as parameter
 * - Fetches the admin from database
@@ -157,7 +172,7 @@ function updateAdmin($request_values){
 }
 
 function createSlug($title) {
-    return str_replace(' ', '-', strtolower($title)); //skinny cette fonction 😆
+    return str_replace(' ', '-', strtolower($title));
 }
 
 function create_topic($request_values)
@@ -239,6 +254,5 @@ function updateTopic($request_values) {
         }
     }
     exit(0);
-
 }
 ?>
