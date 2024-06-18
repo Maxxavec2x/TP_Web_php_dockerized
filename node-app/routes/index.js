@@ -4,8 +4,7 @@ const { fetchData } = require('../api');
 
 function makeStatistics(data) {
   const nbPosts = data.length
-
-
+  
   return {
     nbPosts
   }
