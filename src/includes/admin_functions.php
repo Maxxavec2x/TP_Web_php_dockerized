@@ -172,7 +172,10 @@ function updateAdmin($request_values){
 }
 
 function createSlug($title) {
-    return str_replace(' ', '-', strtolower($title));
+    $title = str_replace(' ', '-', strtolower($title));
+    $title = str_replace('"', '-', $title);
+    $title = str_replace("'", '-', $title);
+    return $title;
 }
 
 function create_topic($request_values)
@@ -182,13 +185,9 @@ function create_topic($request_values)
     $topic_name = $request_values['topicName'];
     $topic_slug = createSlug($topic_name);
     $topic_id = getMaxIDFromTable('topics') + 1;
-    var_dump($topic_name); var_dump($topic_slug); 
     if (empty($topic_name)) {
         array_push($errors, 'Topic name not entered');
-        var_dump($errors);
     }
-    // var_dump($errors);
-    // die();
     if (empty($errors)) { //test si il existe déjà
         $sql = "SELECT * FROM topics WHERE name='$topic_name'";
         $result = mysqli_query($conn, $sql);

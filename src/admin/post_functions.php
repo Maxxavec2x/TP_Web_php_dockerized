@@ -110,14 +110,17 @@ function updateTablePostTopic($post_id, $topic_id) {
 
 function getPostID($title) {
     global $conn;
-    $sql = "SELECT id from posts where title='$title';";
-    if ($result = mysqli_query($conn, $sql)){
-        return mysqli_fetch_assoc($result);
+    $query = "SELECT id from posts where title=?;";
+    if ($stmt= mysqli_prepare($conn, $query)) {
+        //var_dump($stmt);
+        mysqli_stmt_bind_param($stmt, 's', $title);
+        if (mysqli_stmt_execute($stmt)){
+            $result = mysqli_stmt_get_result($stmt);
+            return mysqli_fetch_assoc($result);
+        }  
     }
-    else{
-        array_push($errors, "SQL error, post may not exist");
-        return 0;
-    }
+    array_push($errors, "SQL error, post may not exist");
+    return 0;
 }
 
 function createPost($request_values) {
@@ -150,20 +153,27 @@ function createPost($request_values) {
     }
 
     if (empty($errors)) {
-        $sql = "INSERT INTO `posts` (`user_id`, `title`, `slug`, `image`, `body`, `published`, `views`, `created_at`, `updated_at`) 
-        VALUES ($user_id, '$title', '$slug', '$featured_image', '$body', $published, 0, '$currentDate', '$currentDate');";
-        //todo recup user id avec requete sql
-        if (mysqli_query($conn, $sql)) {
-            $post_id = getPostID($title)['id'];
-            if (updateTablePostTopic($post_id, $topic_id)) {
-                uploadImage();
-                $_SESSION['message'] = "Post created successfully";
-                header('location: posts.php');
-                exit(0);
+        $query = "INSERT INTO `posts` (`user_id`, `title`, `slug`, `image`, `body`, `published`, `views`, `created_at`, `updated_at`)
+        VALUES (?, ?, ?, ?, ?, ?, 0, ?, ?)";
+        $stmt = mysqli_prepare($conn, $query); //preparer un statement pour checker si on essaye de nous entuber
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, 'issssiss', $user_id, $title, $slug, $featured_image, $body, $published, $currentDate, $currentDate);
+            $success = mysqli_stmt_execute($stmt);
+            // if (mysqli_query($conn, $sql)) {
+            if ($success) {
+                $post_id = getPostID($title)['id'];
+                if (updateTablePostTopic($post_id, $topic_id)) {
+                    uploadImage();
+                    $_SESSION['message'] = "Post created successfully";
+                    header('location: posts.php');
+                    exit(0);
+                } else {
+                    echo "Erreur d'exécution de la requête préparée: " . mysqli_stmt_error($stmt) . "\n";
+                    $_SESSION['error_message'] = "Failed to create post";
+                }
             }
         }
     }
-    $_SESSION['message'] = "Erreur : Post not created";
 }
 
 // get the author/username of a post
