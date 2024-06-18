@@ -7,7 +7,8 @@ router.get('/', async (req, res) => {
   const url = 'http://web/API.php';
   try {
     const data = await fetchData(url);
-    res.send(`Fetched Data: ${JSON.stringify(data, null, 2)}`);
+    res.send(`Hello World`);
+    // res.send(`Fetched Data: ${JSON.stringify(data, null, 2)}`);
   } catch (error) {
     res.status(500).send('Error fetching data');
   }

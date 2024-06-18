@@ -50,14 +50,14 @@ services:
       - lamp_network
 
   nodejs:
-    image: node:latest
+    build:
+      context: ./node-app
+      dockerfile: ../node-dockerfile
     container_name: nodejs_app
     volumes:
       - ./node-app:/usr/src/app
-    working_dir: /usr/src/app
-    command: sh -c "npm install && npm install ajax && npm install axios && npm install express && npm install nodemon --global && nodemon index.js"
     ports:
-      - "3001:3000"
+      - "3000:3000"
     networks:
       - lamp_network
 volumes:
