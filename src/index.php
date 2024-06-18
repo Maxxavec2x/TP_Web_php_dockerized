@@ -4,7 +4,7 @@ include('includes/public/head_section.php');
 include(ROOT_PATH . '/includes/public/registration_login.php');
 include(ROOT_PATH . '/includes/all_functions.php');
 ?>
-
+<!-- TEST WORKLOW A DELETE -->
 <title>MyWebSite | Home </title>
 
 </head>
